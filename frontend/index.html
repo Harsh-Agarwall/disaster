@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Disaster Monitoring</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- <h1>Real-Time Disaster Monitoring</h1> -->
+        <div id="map"></div>
+        <div id="twitter-feed">
+            <h2>Related Tweets</h2>
+            <ul id="tweets"></ul>
+        </div>
+        <div id="sentiment-summary">
+            <canvas id="sentimentChart"></canvas>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- <script src="script2.js"></script> -->
+     <script>
+const map = L.map('map').setView([20.5937, 78.9629], 5);  // Default to world view
+
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+    }).addTo(map);
+
+ 
+    fetch('http://localhost:5000/usgs')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(earthquake => {
+                const [longitude, latitude] = earthquake.coordinates;
+
+                // maker
+                L.marker([latitude, longitude])
+                    .addTo(map)
+                    .bindPopup(`
+                        <strong>${earthquake.place}</strong><br>
+                        Magnitude: ${earthquake.magnitude}<br>
+                        Time: ${new Date(earthquake.time).toLocaleString()}
+                    `);
+            });
+        })
+        .catch(error => console.error('Error fetching data:', error));
+</script>
+    <script src="script.js"></script>
+</body>
+</html>

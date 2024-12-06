@@ -1,0 +1,23 @@
+body {
+    font-family: Arial, sans-serif;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#map {
+    height: 200px;
+    width: 40%;
+    margin: 20px 0;
+}
+#sentiment-summary {
+    width: 80%;
+}
+#twitter-feed {
+    width: 80%;
+}
+#tweets {
+    list-style: none;
+    padding: 0;
+}
